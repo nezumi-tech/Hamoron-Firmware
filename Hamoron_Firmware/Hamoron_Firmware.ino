@@ -62,115 +62,154 @@ void loop()//メイン
 
   byte data1, data2;//8bitデータ変数定義　data1とdata2
 
-  if (MIDI.read())//もしMIDIでなにか読み込んだら
-  {
+  if (MIDI.read()) {
 
     MIDI.setInputChannel(1);//MIDIのチャンネル１を読み込む
 
-    switch (MIDI.getType()) {//何か情報を得たら
+    if (MIDI.getType() == midi::NoteOn) {
 
-      case midi::NoteOn://それがNoteOnだった場合
-        data1 = MIDI.getData1();    // ノートNo.
-        data2 = MIDI.getData2();    //  ベロシティ
+      data1 = MIDI.getData1();    // ノートNo.
+      data2 = MIDI.getData2();    //  ベロシティ
 
-        if (data2 == 0) { }//ベロシティが0だったら何もしない
-        else {//それ以外の時は
-          switch (data1)  //NoteOnの数値が
-          {
-            //NoteOnに対応したデジタルピンをHIGHにする
-
-            case 53: PORTD |= _BV(0); break;//53だったらPD1(21)をHIGHにする。PB0にするとD53
-            case 54: PORTB |= _BV(1); break;
-            case 55: PORTB |= _BV(2); break;
-            case 56: PORTB |= _BV(3); break;
-            case 57: PORTL |= _BV(0); break;
-            case 58: PORTL |= _BV(1); break;
-            case 59: PORTL |= _BV(2); break;
-
-            case 60: PORTL |= _BV(3); break;
-            case 61: PORTL |= _BV(4); break;
-            case 62: PORTL |= _BV(5); break;
-            case 63: PORTL |= _BV(6); break;
-            case 64: PORTL |= _BV(7); break;
-            case 65: PORTG |= _BV(0); break;
-            case 66: PORTG |= _BV(1); break;
-            case 67: PORTG |= _BV(2); break;
-            case 68: PORTD |= _BV(7); break;
-            case 69: PORTC |= _BV(0); break;
-            case 70: PORTC |= _BV(1); break;
-            case 71: PORTC |= _BV(2); break;
-
-            case 72: PORTC |= _BV(3); break;
-            case 73: PORTC |= _BV(4); break;
-            case 74: PORTC |= _BV(5); break;
-            case 75: PORTC |= _BV(6); break;
-            case 76: PORTC |= _BV(7); break;
-            case 77: PORTA |= _BV(7); break;
-            case 78: PORTA |= _BV(6); break;
-            case 79: PORTA |= _BV(5); break;
-            case 80: PORTA |= _BV(4); break;
-            case 81: PORTA |= _BV(3); break;
-            case 82: PORTA |= _BV(2); break;
-            case 83: PORTA |= _BV(1); break;
-
-            case 84: PORTA |= _BV(0); break;
-
-            default: break;//これら以外だったら抜ける
-          }
-          digitalWrite(LED, HIGH);
+      if (data2 == 0) {
+      } else {
+        if (data1 == 53) {
+          PORTD |= _BV(0);
+        } else if (data1 == 54) {
+          PORTB |= _BV(1);
+        } else if (data1 == 55) {
+          PORTB |= _BV(2);
+        } else if (data1 == 56) {
+          PORTB |= _BV(3);
+        } else if (data1 == 57) {
+          PORTL |= _BV(0);
+        } else if (data1 == 58) {
+          PORTL |= _BV(1);
+        } else if (data1 == 59) {
+          PORTL |= _BV(2);
+        } else if (data1 == 60) {
+          PORTL |= _BV(3);
+        } else if (data1 == 61) {
+          PORTL |= _BV(4);
+        } else if (data1 == 62) {
+          PORTL |= _BV(5);
+        } else if (data1 == 63) {
+          PORTL |= _BV(6);
+        } else if (data1 == 64) {
+          PORTL |= _BV(7);
+        } else if (data1 == 65) {
+          PORTG |= _BV(0);
+        } else if (data1 == 66) {
+          PORTG |= _BV(1);
+        } else if (data1 == 67) {
+          PORTG |= _BV(2);
+        } else if (data1 == 68) {
+          PORTD |= _BV(7);
+        } else if (data1 == 69) {
+          PORTC |= _BV(0);
+        } else if (data1 == 70) {
+          PORTC |= _BV(1);
+        } else if (data1 == 71) {
+          PORTC |= _BV(2);
+        } else if (data1 == 72) {
+          PORTC |= _BV(3);
+        } else if (data1 == 73) {
+          PORTC |= _BV(4);
+        } else if (data1 == 74) {
+          PORTC |= _BV(5);
+        } else if (data1 == 75) {
+          PORTC |= _BV(6);
+        } else if (data1 == 76) {
+          PORTC |= _BV(7);
+        } else if (data1 == 77) {
+          PORTA |= _BV(7);
+        } else if (data1 == 78) {
+          PORTA |= _BV(6);
+        } else if (data1 == 79) {
+          PORTA |= _BV(5);
+        } else if (data1 == 80) {
+          PORTA |= _BV(4);
+        } else if (data1 == 81) {
+          PORTA |= _BV(3);
+        } else if (data1 == 82) {
+          PORTA |= _BV(2);
+        } else if (data1 == 83) {
+          PORTA |= _BV(1);
+        } else if (data1 == 84) {
+          PORTA |= _BV(0);
         }
-        break;
+      }
+      //digitalWrite(LED, HIGH);
 
-      case midi::NoteOff:
-        data1 = MIDI.getData1(); // note off
-        switch (data1) {//階層4
-          //note off に対応したデジタルピンをLOWにする
+    } else if (MIDI.getType() == midi::NoteOff) {
+      data1 = MIDI.getData1();
+      if (data1 == 53) {
+        PORTD &= ~_BV(0);
+      } else if (data1 == 54) {
+        PORTB &= ~_BV(1);
+      } else if (data1 == 55) {
+        PORTB &= ~_BV(2);
+      } else if (data1 == 56) {
+        PORTB &= ~_BV(3);
+      } else if (data1 == 57) {
+        PORTL &= ~_BV(0);
+      } else if (data1 == 58) {
+        PORTL &= ~_BV(1);
+      } else if (data1 == 59) {
+        PORTL &= ~_BV(2);
+      } else if (data1 == 60) {
+        PORTL &= ~_BV(3);
+      } else if (data1 == 61) {
+        PORTL &= ~_BV(4);
+      } else if (data1 == 62) {
+        PORTL &= ~_BV(5);
+      } else if (data1 == 63) {
+        PORTL &= ~_BV(6);
+      } else if (data1 == 64) {
+        PORTL &= ~_BV(7);
+      } else if (data1 == 65) {
+        PORTG &= ~_BV(0);
+      } else if (data1 == 66) {
+        PORTG &= ~_BV(1);
+      } else if (data1 == 67) {
+        PORTG &= ~_BV(2);
+      } else if (data1 == 68) {
+        PORTD &= ~_BV(7);
+      } else if (data1 == 69) {
+        PORTC &= ~_BV(0);
+      } else if (data1 == 70) {
+        PORTC &= ~_BV(1);
+      } else if (data1 == 71) {
+        PORTC &= ~_BV(2);
+      } else if (data1 == 72) {
+        PORTC &= ~_BV(3);
+      } else if (data1 == 73) {
+        PORTC &= ~_BV(4);
+      } else if (data1 == 74) {
+        PORTC &= ~_BV(5);
+      } else if (data1 == 75) {
+        PORTC &= ~_BV(6);
+      } else if (data1 == 76) {
+        PORTC &= ~_BV(7);
+      } else if (data1 == 77) {
+        PORTA &= ~_BV(7);
+      } else if (data1 == 78) {
+        PORTA &= ~_BV(6);
+      } else if (data1 == 79) {
+        PORTA &= ~_BV(5);
+      } else if (data1 == 80) {
+        PORTA &= ~_BV(4);
+      } else if (data1 == 81) {
+        PORTA &= ~_BV(3);
+      } else if (data1 == 82) {
+        PORTA &= ~_BV(2);
+      } else if (data1 == 83) {
+        PORTA &= ~_BV(1);
+      } else if (data1 == 84) {
+        PORTA &= ~_BV(0);
+      }
+      //digitalWrite(LED, LOW);
 
-          case 53: PORTD &= ~_BV(0); break;//53だったらPD1(21)をLOWにする。PB0にするとD53
-          case 54: PORTB &= ~_BV(1); break;
-          case 55: PORTB &= ~_BV(2); break;
-          case 56: PORTB &= ~_BV(3); break;
-          case 57: PORTL &= ~_BV(0); break;
-          case 58: PORTL &= ~_BV(1); break;
-          case 59: PORTL &= ~_BV(2); break;
-
-          case 60: PORTL &= ~_BV(3); break;
-          case 61: PORTL &= ~_BV(4); break;
-          case 62: PORTL &= ~_BV(5); break;
-          case 63: PORTL &= ~_BV(6); break;
-          case 64: PORTL &= ~_BV(7); break;
-          case 65: PORTG &= ~_BV(0); break;
-          case 66: PORTG &= ~_BV(1); break;
-          case 67: PORTG &= ~_BV(2); break;
-          case 68: PORTD &= ~_BV(7); break;
-          case 69: PORTC &= ~_BV(0); break;
-          case 70: PORTC &= ~_BV(1); break;
-          case 71: PORTC &= ~_BV(2); break;
-
-          case 72: PORTC &= ~_BV(3); break;
-          case 73: PORTC &= ~_BV(4); break;
-          case 74: PORTC &= ~_BV(5); break;
-          case 75: PORTC &= ~_BV(6); break;
-          case 76: PORTC &= ~_BV(7); break;
-          case 77: PORTA &= ~_BV(7); break;
-          case 78: PORTA &= ~_BV(6); break;
-          case 79: PORTA &= ~_BV(5); break;
-          case 80: PORTA &= ~_BV(4); break;
-          case 81: PORTA &= ~_BV(3); break;
-          case 82: PORTA &= ~_BV(2); break;
-          case 83: PORTA &= ~_BV(1); break;
-
-          case 84: PORTA &= ~_BV(0); break;
-
-
-          default: break;
-        }
-        digitalWrite(LED, LOW);
-        break;
-      default: break;
     }
-
   }
-
 }
-
