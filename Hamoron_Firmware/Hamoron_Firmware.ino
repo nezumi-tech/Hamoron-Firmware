@@ -1,10 +1,15 @@
-//Arduino MegaのSerial1を使うようにしました。
-
 #include <MIDI.h>//MIDIライブラリ
 
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
 #define LED 13
+
+const int bitPin[8] = {54, 55, 56, 57, 58, 59, 60, 61};
+
+//120, 120, 112, 104, 96, 88, 80, 72, 64, 56, 48, 40, 32, 24, 16, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+const byte numvsvelo[33] = {135, 135, 143, 151, 159, 167, 175, 183, 191, 199, 207, 215, 223, 231, 239, 247, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
+
+int num = 0;
 
 void setup()//セットアップ
 {
@@ -50,6 +55,11 @@ void setup()//セットアップ
 
   pinMode(22, OUTPUT);
 
+  for (int i = 0; i <= 7; i++) {
+    pinMode(bitPin[i], OUTPUT);
+    digitalWrite(bitPin[i], HIGH);
+  }
+
   //ピンモード設定ここまで
 
   MIDI.begin(1);//MIDIモード開始。チャンネルは1
@@ -72,6 +82,7 @@ void loop()//メイン
       data2 = MIDI.getData2();    //  ベロシティ
 
       if (data2 == 0) {
+        num--;
       } else {
         if (data1 == 53) {
           PORTD |= _BV(0);
@@ -138,9 +149,9 @@ void loop()//メイン
         } else if (data1 == 84) {
           PORTA |= _BV(0);
         }
+        num++;
       }
-      //digitalWrite(LED, HIGH);
-
+      
     } else if (MIDI.getType() == midi::NoteOff) {
       data1 = MIDI.getData1();
       if (data1 == 53) {
@@ -208,8 +219,9 @@ void loop()//メイン
       } else if (data1 == 84) {
         PORTA &= ~_BV(0);
       }
-      //digitalWrite(LED, LOW);
-
+      num--;
     }
+    num = constrain(num, 0, 32);
+     PORTF = numvsvelo[num];
   }
 }
