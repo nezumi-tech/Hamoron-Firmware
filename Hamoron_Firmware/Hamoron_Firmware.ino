@@ -2,20 +2,20 @@
 
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
-#define LED 13
+//#define LED 13
 
-const int bitPin[8] = {54, 55, 56, 57, 58, 59, 60, 61};
+//const int bitPin[8] = {54, 55, 56, 57, 58, 59, 60, 61};
 
 //120, 120, 112, 104, 96, 88, 80, 72, 64, 56, 48, 40, 32, 24, 16, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-const byte numvsvelo[33] = {135, 135, 143, 151, 159, 167, 175, 183, 191, 199, 207, 215, 223, 231, 239, 247, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
+//const byte numvsvelo[33] = {135, 135, 143, 151, 159, 167, 175, 183, 191, 199, 207, 215, 223, 231, 239, 247, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
 
-int num = 0;
+//int num = 0;
 
 void setup()//セットアップ
 {
   //ピンモード設定
 
-  pinMode(LED, OUTPUT);
+  //pinMode(LED, OUTPUT);
 
   pinMode(20, OUTPUT);
 
@@ -55,9 +55,10 @@ void setup()//セットアップ
 
   pinMode(22, OUTPUT);
 
-  for (int i = 0; i <= 7; i++) {
+  /*for (int i = 0; i <= 7; i++) {
     pinMode(bitPin[i], OUTPUT);
     digitalWrite(bitPin[i], HIGH);
+  */
   }
 
   //ピンモード設定ここまで
@@ -149,7 +150,7 @@ void loop()//メイン
         } else if (data1 == 84) {
           PORTA |= _BV(0);
         }
-        num++;
+        //num++;
       }
       
     } else if (MIDI.getType() == midi::NoteOff) {
@@ -219,9 +220,9 @@ void loop()//メイン
       } else if (data1 == 84) {
         PORTA &= ~_BV(0);
       }
-      num--;
+      //num--;
     }
-    num = constrain(num, 0, 32);
-     PORTF = numvsvelo[num];
+    //num = constrain(num, 0, 32);
+    //PORTF = numvsvelo[num];
   }
 }
