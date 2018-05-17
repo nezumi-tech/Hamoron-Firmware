@@ -4,7 +4,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
 void handleNoteOn(byte channel, byte note, byte velocity) {
   if (note == 53) {
-    PORTD |= _BV(0);
+    PORTB |= _BV(0);
   } else if (note == 54) {
     PORTB |= _BV(1);
   } else if (note == 55) {
@@ -72,7 +72,7 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
 
 void handleNoteOff(byte channel, byte note, byte velocity) {
   if (note == 53) {
-    PORTD &= ~_BV(0);
+    PORTB &= ~_BV(0);
   } else if (note == 54) {
     PORTB &= ~_BV(1);
   } else if (note == 55) {
@@ -139,9 +139,7 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
 }
 
 void setup() {
-  pinMode(20, OUTPUT);
-
-  pinMode(21, OUTPUT);
+  pinMode(53, OUTPUT);//F3
   pinMode(52, OUTPUT);
   pinMode(51, OUTPUT);
   pinMode(50, OUTPUT);
@@ -149,7 +147,7 @@ void setup() {
   pinMode(48, OUTPUT);
   pinMode(47, OUTPUT);
 
-  pinMode(46, OUTPUT);
+  pinMode(46, OUTPUT);//C4
   pinMode(45, OUTPUT);
   pinMode(44, OUTPUT);
   pinMode(43, OUTPUT);
@@ -162,7 +160,7 @@ void setup() {
   pinMode(36, OUTPUT);
   pinMode(35, OUTPUT);
 
-  pinMode(34, OUTPUT);
+  pinMode(34, OUTPUT);//C5
   pinMode(33, OUTPUT);
   pinMode(32, OUTPUT);
   pinMode(31, OUTPUT);
@@ -175,13 +173,12 @@ void setup() {
   pinMode(24, OUTPUT);
   pinMode(23, OUTPUT);
 
-  pinMode(22, OUTPUT);
+  pinMode(22, OUTPUT);//C6
 
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleNoteOff(handleNoteOff);
 
   MIDI.begin(1);
-
 }
 
 
