@@ -1,5 +1,7 @@
 #include <MIDI.h>
 
+#include <avr/wdt.h> 
+
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
 void handleNoteOn(byte channel, byte note, byte velocity) {
@@ -179,11 +181,13 @@ void setup() {
   MIDI.setHandleNoteOff(handleNoteOff);
 
   MIDI.begin(1);
+  wdt_enable(WDTO_30MS);
 }
 
 
 void loop() {
 
   MIDI.read();
+  wdt_reset(); 
 
 }
