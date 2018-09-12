@@ -215,7 +215,7 @@ void setup() {
   MIDI.setHandleNoteOff(handleNoteOff);
 
   MIDI.begin(1);
-  wdt_enable(WDTO_15MS);
+  wdt_enable(WDTO_30MS);
 }
 
 
