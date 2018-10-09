@@ -1,6 +1,6 @@
 #include <MIDI.h>
 
-#include <avr/wdt.h> 
+#include <avr/wdt.h>
 
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
@@ -178,38 +178,38 @@ void setup() {
   pinMode(22, OUTPUT);//C6
 
 
-    PORTB &= ~_BV(0);
-    PORTB &= ~_BV(1);
-    PORTB &= ~_BV(2);
-    PORTB &= ~_BV(3);
-    PORTL &= ~_BV(0);
-    PORTL &= ~_BV(1);
-    PORTL &= ~_BV(2);
-    PORTL &= ~_BV(3);
-    PORTL &= ~_BV(4);
-    PORTL &= ~_BV(5);
-    PORTL &= ~_BV(6);
-    PORTL &= ~_BV(7);
-    PORTG &= ~_BV(0);
-    PORTG &= ~_BV(1);
-    PORTG &= ~_BV(2);
-    PORTD &= ~_BV(7);
-    PORTC &= ~_BV(0);
-    PORTC &= ~_BV(1);
-    PORTC &= ~_BV(2);
-    PORTC &= ~_BV(3);
-    PORTC &= ~_BV(4);
-    PORTC &= ~_BV(5);
-    PORTC &= ~_BV(6);
-    PORTC &= ~_BV(7);
-    PORTA &= ~_BV(7);
-    PORTA &= ~_BV(6);
-    PORTA &= ~_BV(5);
-    PORTA &= ~_BV(4);
-    PORTA &= ~_BV(3);
-    PORTA &= ~_BV(2);
-    PORTA &= ~_BV(1);
-    PORTA &= ~_BV(0);
+  PORTB &= ~_BV(0);
+  PORTB &= ~_BV(1);
+  PORTB &= ~_BV(2);
+  PORTB &= ~_BV(3);
+  PORTL &= ~_BV(0);
+  PORTL &= ~_BV(1);
+  PORTL &= ~_BV(2);
+  PORTL &= ~_BV(3);
+  PORTL &= ~_BV(4);
+  PORTL &= ~_BV(5);
+  PORTL &= ~_BV(6);
+  PORTL &= ~_BV(7);
+  PORTG &= ~_BV(0);
+  PORTG &= ~_BV(1);
+  PORTG &= ~_BV(2);
+  PORTD &= ~_BV(7);
+  PORTC &= ~_BV(0);
+  PORTC &= ~_BV(1);
+  PORTC &= ~_BV(2);
+  PORTC &= ~_BV(3);
+  PORTC &= ~_BV(4);
+  PORTC &= ~_BV(5);
+  PORTC &= ~_BV(6);
+  PORTC &= ~_BV(7);
+  PORTA &= ~_BV(7);
+  PORTA &= ~_BV(6);
+  PORTA &= ~_BV(5);
+  PORTA &= ~_BV(4);
+  PORTA &= ~_BV(3);
+  PORTA &= ~_BV(2);
+  PORTA &= ~_BV(1);
+  PORTA &= ~_BV(0);
 
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleNoteOff(handleNoteOff);
@@ -222,6 +222,6 @@ void setup() {
 void loop() {
 
   MIDI.read();
-  wdt_reset(); 
+  wdt_reset();
 
 }
