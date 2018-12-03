@@ -2,6 +2,8 @@
 
 #include <avr/wdt.h>
 
+const int PWMpin = 13;
+
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
 void handleNoteOn(byte channel, byte note, byte velocity) {
@@ -69,6 +71,9 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
     PORTA |= _BV(1);
   } else if (note == 84) {
     PORTA |= _BV(0);
+  } else if (note == 85) {
+    analogWrite(PWMpin, velocity * 2);  //風量調節。LPFを通してドライバにつなぐ。
+  } else {
   }
 }
 
@@ -137,6 +142,7 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
     PORTA &= ~_BV(1);
   } else if (note == 84) {
     PORTA &= ~_BV(0);
+  } else {
   }
 }
 
@@ -177,7 +183,7 @@ void setup() {
 
   pinMode(22, OUTPUT);//C6
 
-
+  //全てのピンをLOWにする
   PORTB &= ~_BV(0);
   PORTB &= ~_BV(1);
   PORTB &= ~_BV(2);
