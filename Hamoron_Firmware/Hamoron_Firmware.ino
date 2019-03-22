@@ -44,6 +44,12 @@ void Initialize() {
   analogWrite(PWMpin, 0);//送風量を0にする
 }
 
+/*
+void VolumeChange(int vel) {
+  analogWrite(PWMpin, constrain(map(vel, 0, 127, 0, 255), 0, 255));
+}
+*/
+
 void handleNoteOn(byte channel, byte note, byte velocity) {
   if (note == 53) {
     PORTB |= _BV(0);
@@ -109,8 +115,6 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
     PORTA |= _BV(1);
   } else if (note == 84) {
     PORTA |= _BV(0);
-  } else if (note == 85) {
-    analogWrite(PWMpin, velocity * 2);  //風量調節。LPFを通してドライバにつなぐ。
   } else {
   }
 }
@@ -185,8 +189,11 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
 }
 
 void handleControlChange(byte channel, byte number, byte value) {
-  if (number == 120 || number == 123) {
+  if (number == 120 || 121 || 123) { //AllSoundsOff,ResetAllControler,AllNoteOff
     Initialize();
+  } else if (number == 11) { //Expression
+    analogWrite(PWMpin, number * 2);  //風量調節。LPFを通してドライバにつなぐ。
+  } else {
   }
 }
 
