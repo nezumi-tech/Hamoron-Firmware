@@ -4,6 +4,10 @@
 
 const int PWMpin = 5;
 
+int NoteCount = 0;
+
+int Expression = 0;
+
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
 void Initialize() {
@@ -41,16 +45,43 @@ void Initialize() {
   PORTA &= ~_BV(1);
   PORTA &= ~_BV(0);
 
+  NoteCount = 0;
+
   analogWrite(PWMpin, 0);//送風量を0にする
 }
 
-/*
-void VolumeChange(int vel) {
+
+void VolumeChange() {
+  if (NoteCount < 0) {
+    NoteCount = 0;
+  }
+  int vel = Expression + 5 * NoteCount;
   analogWrite(PWMpin, constrain(map(vel, 0, 127, 0, 255), 0, 255));
+  //Serial.print(NoteCount);
+  //Serial.print(' ');
+  //Serial.println(vel);
 }
-*/
+
+
+int AdjustNote (int note) {
+  if (note <= 84 && note >= 53) {
+  } else if (note > 84) {
+    do {
+      note = note - 12;
+    } while (note > 84);
+  } else if (note < 53) {
+    do {
+      note = note + 12;
+    } while (note < 53);
+  }
+  return note;
+}
 
 void handleNoteOn(byte channel, byte note, byte velocity) {
+  note = AdjustNote(note);
+  NoteCount += 1;
+  VolumeChange();
+
   if (note == 53) {
     PORTB |= _BV(0);
   } else if (note == 54) {
@@ -120,6 +151,10 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
 }
 
 void handleNoteOff(byte channel, byte note, byte velocity) {
+  note = AdjustNote(note);
+  NoteCount -= 1;
+  VolumeChange();
+
   if (note == 53) {
     PORTB &= ~_BV(0);
   } else if (note == 54) {
@@ -189,10 +224,11 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
 }
 
 void handleControlChange(byte channel, byte number, byte value) {
-  if (number == 120 || 121 || 123) { //AllSoundsOff,ResetAllControler,AllNoteOff
+  if (number == 120 || number == 121 || number == 123) { //AllSoundsOff,ResetAllControler,AllNoteOff
     Initialize();
   } else if (number == 11) { //Expression
-    analogWrite(PWMpin, number * 2);  //風量調節。LPFを通してドライバにつなぐ。
+    Expression = value;
+    VolumeChange();
   } else {
   }
 }
@@ -243,6 +279,8 @@ void setup() {
   MIDI.setHandleControlChange(handleControlChange);
 
   Initialize();
+
+  //Serial.begin(115200);
 
   MIDI.begin(1);
   wdt_enable(WDTO_30MS);
