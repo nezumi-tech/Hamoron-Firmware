@@ -57,7 +57,7 @@ void VolumeChange() {
     NoteCount = 0;
   }
   int vel = Expression;// + 5*NoteCount;
-  analogWrite(PWMpin, constrain(map(vel, 0, 127, 0, 255), 0, 255));
+  analogWrite(PWMpin, constrain(vel << 1, 0, 255));//velを1ビット左シフト(2倍)
   Serial.print(NoteCount);
   Serial.print(' ');
   Serial.println(vel);
@@ -225,7 +225,7 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
 }
 
 void handleControlChange(byte channel, byte number, byte value) {
-  if (number == 120 || number == 121 || number == 123) { //AllSoundsOff,ResetAllControler,AllNoteOff
+  if (number == 120 || number == 121 || number == 123) { //AllSoundsOff, ResetAllControler, AllNoteOff
     Initialize();
   } else if (number == 11) { //Expression
     Expression = value;
