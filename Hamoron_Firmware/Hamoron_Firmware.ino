@@ -6,7 +6,7 @@ const int PWMpin = 5;
 
 int NoteCount = 0;
 
-int Expression = 0;
+int Expression = 60;
 
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
@@ -47,7 +47,8 @@ void Initialize() {
 
   NoteCount = 0;
 
-  analogWrite(PWMpin, 0);//送風量を0にする
+  analogWrite(PWMpin, 120);//送風量を60にする
+
 }
 
 
@@ -55,11 +56,11 @@ void VolumeChange() {
   if (NoteCount < 0) {
     NoteCount = 0;
   }
-  int vel = Expression; //+ 5 * NoteCount;
+  int vel = Expression;// + 5*NoteCount;
   analogWrite(PWMpin, constrain(map(vel, 0, 127, 0, 255), 0, 255));
-  //Serial.print(NoteCount);
-  //Serial.print(' ');
-  //Serial.println(vel);
+  Serial.print(NoteCount);
+  Serial.print(' ');
+  Serial.println(vel);
 }
 
 
@@ -280,7 +281,7 @@ void setup() {
 
   Initialize();
 
-  //Serial.begin(115200);
+  Serial.begin(115200);
 
   MIDI.begin(1);
   wdt_enable(WDTO_30MS);
