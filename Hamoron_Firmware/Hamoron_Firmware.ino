@@ -56,7 +56,7 @@ void VolumeChange() {
   if (NoteCount < 0) {
     NoteCount = 0;
   }
-  int vel = Expression;// + 5*NoteCount;
+  int vel = Expression + 5*NoteCount;
   analogWrite(PWMpin, constrain(vel+vel, 0, 255));//vel+vel(2倍)
   Serial.print(NoteCount);
   Serial.print(' ');
