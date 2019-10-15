@@ -56,11 +56,11 @@ void VolumeChange() {
   if (NoteCount < 0) {
     NoteCount = 0;
   }
-  int vel = Expression + 5*NoteCount;
-  analogWrite(PWMpin, constrain(vel+vel, 0, 255));//vel+vel(2倍)
-  Serial.print(NoteCount);
-  Serial.print(' ');
-  Serial.println(vel);
+  int vel = Expression + 5 * NoteCount;
+  analogWrite(PWMpin, constrain(vel + vel, 0, 255)); //vel+vel(2倍)
+  //Serial.print(NoteCount);
+  //Serial.print(' ');
+  //Serial.println(vel);
 }
 
 
@@ -281,7 +281,7 @@ void setup() {
 
   Initialize();
 
-  Serial.begin(115200);
+  //Serial.begin(115200);
 
   MIDI.begin(1);
   wdt_enable(WDTO_30MS);
