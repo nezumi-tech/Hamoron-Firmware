@@ -6,7 +6,7 @@ const int PWMpin = 5;
 
 int NoteCount = 0;
 
-int Expression = 0;
+int Expression = 60;
 
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
@@ -47,7 +47,8 @@ void Initialize() {
 
   NoteCount = 0;
 
-  analogWrite(PWMpin, 0);//送風量を0にする
+  analogWrite(PWMpin, 120);//送風量を60にする
+
 }
 
 
@@ -56,7 +57,7 @@ void VolumeChange() {
     NoteCount = 0;
   }
   int vel = Expression + 5 * NoteCount;
-  analogWrite(PWMpin, constrain(map(vel, 0, 127, 0, 255), 0, 255));
+  analogWrite(PWMpin, constrain(vel + vel, 0, 255)); //vel+vel(2倍)
   //Serial.print(NoteCount);
   //Serial.print(' ');
   //Serial.println(vel);
@@ -224,7 +225,7 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
 }
 
 void handleControlChange(byte channel, byte number, byte value) {
-  if (number == 120 || number == 121 || number == 123) { //AllSoundsOff,ResetAllControler,AllNoteOff
+  if (number == 120 || number == 121 || number == 123) { //AllSoundsOff, ResetAllControler, AllNoteOff
     Initialize();
   } else if (number == 11) { //Expression
     Expression = value;
