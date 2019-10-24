@@ -79,6 +79,8 @@ int AdjustNote (int note) {
 }
 
 void handleNoteOn(byte channel, byte note, byte velocity) {
+  (void) channel;//Wunused-parameter警告を回避
+  (void) velocity;
   note = AdjustNote(note);
   NoteCount += 1;
   VolumeChange();
@@ -152,6 +154,8 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
 }
 
 void handleNoteOff(byte channel, byte note, byte velocity) {
+  (void) channel;
+  (void) velocity;
   note = AdjustNote(note);
   NoteCount -= 1;
   VolumeChange();
@@ -225,6 +229,7 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
 }
 
 void handleControlChange(byte channel, byte number, byte value) {
+  (void) channel;
   if (number == 120 || number == 121 || number == 123) { //AllSoundsOff, ResetAllControler, AllNoteOff
     Initialize();
   } else if (number == 11) { //Expression
@@ -272,12 +277,14 @@ void setup() {
   pinMode(22, OUTPUT);//C6
 
   //PWM
-  TCCR3B = TCCR3B & 0b11111000 | 0x01;
+  TCCR3B = (TCCR3B & 0b11111000) | 0x01;
   pinMode(PWMpin, OUTPUT);
 
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleNoteOff(handleNoteOff);
   MIDI.setHandleControlChange(handleControlChange);
+
+  MIDI.turnThruOff();//THRUの実行を停止
 
   Initialize();
 
