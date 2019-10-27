@@ -8,11 +8,11 @@ void setup() {
   pinMode(LED_OUT, OUTPUT);
   digitalWrite(Switch_OUT, HIGH);
   digitalWrite(LED_OUT, LOW);
-  flash_LED_10sec();
+  flash_LED_1sec();
 }
 
-void flash_LED_10sec() {
-  for (int i = 0; i < 10; i++) {
+void flash_LED_1sec() {
+  for (int i = 0; i < 1; i++) {
     digitalWrite(LED_OUT, HIGH);
     delay(500);
     digitalWrite(LED_OUT, LOW);
@@ -20,8 +20,8 @@ void flash_LED_10sec() {
   }
 }
 
-void flash_LED_1sec() {
-  for (int i = 0; i < 5; i++) {
+void flash_LED_3sec() {
+  for (int i = 0; i < 15; i++) {
     digitalWrite(LED_OUT, HIGH);
     delay(100);
     digitalWrite(LED_OUT, LOW);
@@ -33,10 +33,10 @@ void loop() {
   if (digitalRead(Error_IN) == LOW) {
     digitalWrite(Switch_OUT, LOW);
     digitalWrite(LED_OUT, HIGH);
-    flash_LED_1sec();
+    flash_LED_3sec();
     digitalWrite(Switch_OUT, HIGH);
     digitalWrite(LED_OUT, LOW);
-    flash_LED_10sec();
+    flash_LED_1sec();
   }
   delay(1);
 }
