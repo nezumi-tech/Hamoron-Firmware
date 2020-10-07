@@ -290,7 +290,8 @@ void setup() {
 
   Serial.begin(115200);
 
-  MIDI.begin(1);
+  MIDI.begin(MIDI_CHANNEL_OMNI);
+  //MIDI.begin(1);
   wdt_enable(WDTO_30MS);
 }
 
