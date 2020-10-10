@@ -2,48 +2,21 @@
 
 #include <avr/wdt.h>
 
-const int PWMpin = 5;
+const uint8_t PWMpin = 5;
 
-int NoteCount = 0;
+int8_t NoteCount = 0;
 
-int Expression = 60;
+uint8_t Expression = 60;
 
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
 void Initialize() {
   //全てのピンをLOWにする
-  PORTB &= ~_BV(0);
-  PORTB &= ~_BV(1);
-  PORTB &= ~_BV(2);
-  PORTB &= ~_BV(3);
-  PORTL &= ~_BV(0);
-  PORTL &= ~_BV(1);
-  PORTL &= ~_BV(2);
-  PORTL &= ~_BV(3);
-  PORTL &= ~_BV(4);
-  PORTL &= ~_BV(5);
-  PORTL &= ~_BV(6);
-  PORTL &= ~_BV(7);
-  PORTG &= ~_BV(0);
-  PORTG &= ~_BV(1);
-  PORTG &= ~_BV(2);
-  PORTD &= ~_BV(7);
-  PORTC &= ~_BV(0);
-  PORTC &= ~_BV(1);
-  PORTC &= ~_BV(2);
-  PORTC &= ~_BV(3);
-  PORTC &= ~_BV(4);
-  PORTC &= ~_BV(5);
-  PORTC &= ~_BV(6);
-  PORTC &= ~_BV(7);
-  PORTA &= ~_BV(7);
-  PORTA &= ~_BV(6);
-  PORTA &= ~_BV(5);
-  PORTA &= ~_BV(4);
-  PORTA &= ~_BV(3);
-  PORTA &= ~_BV(2);
-  PORTA &= ~_BV(1);
-  PORTA &= ~_BV(0);
+  PORTB &= ~B00001111;
+  PORTL &= ~B11111111;
+  PORTG &= ~B10000111;
+  PORTC &= ~B11111111;
+  PORTA &= ~B11111111;
 
   NoteCount = 0;
 
@@ -64,21 +37,48 @@ void VolumeChange() {
 }
 
 
-int AdjustNote (int note) {
+uint8_t AdjustNote (uint8_t note) {
   if (note <= 84 && note >= 53) {
+    return note;
   } else if (note > 84) {
-    do {
-      note = note - 12;
-    } while (note > 84);
+    note = note - 12;
+    if (note <= 84) {
+      return note;
+    }
+    note = note - 12;
+    if (note <= 84) {
+      return note;
+    }
+    note = note - 12;
+    if (note <= 84) {
+      return note;
+    }
+    note = note - 12;
+    return note;
+
   } else if (note < 53) {
-    do {
-      note = note + 12;
-    } while (note < 53);
+    note = note + 12;
+    if (note >= 53) {
+      return note;
+    }
+    note = note + 12;
+    if (note >= 53) {
+      return note;
+    }
+    note = note + 12;
+    if (note >= 53) {
+      return note;
+    }
+    note = note + 12;
+    if (note >= 53) {
+      return note;
+    }
+    note = note + 12;
+    return note;
   }
-  return note;
 }
 
-void handleNoteOn(byte channel, byte note, byte velocity) {
+void handleNoteOn(uint8_t channel, uint8_t note, uint8_t velocity) {
   (void) channel;//Wunused-parameter警告を回避
   (void) velocity;
   note = AdjustNote(note);
@@ -153,7 +153,7 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
   }
 }
 
-void handleNoteOff(byte channel, byte note, byte velocity) {
+void handleNoteOff(uint8_t channel, uint8_t note, uint8_t velocity) {
   (void) channel;
   (void) velocity;
   note = AdjustNote(note);
@@ -228,7 +228,7 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
   }
 }
 
-void handleControlChange(byte channel, byte number, byte value) {
+void handleControlChange(uint8_t channel, uint8_t number, uint8_t value) {
   (void) channel;
   if (number == 120 || number == 121 || number == 123) { //AllSoundsOff, ResetAllControler, AllNoteOff
     Initialize();
@@ -240,41 +240,11 @@ void handleControlChange(byte channel, byte number, byte value) {
 }
 
 void setup() {
-  pinMode(53, OUTPUT);//F3
-  pinMode(52, OUTPUT);
-  pinMode(51, OUTPUT);
-  pinMode(50, OUTPUT);
-  pinMode(49, OUTPUT);
-  pinMode(48, OUTPUT);
-  pinMode(47, OUTPUT);
-
-  pinMode(46, OUTPUT);//C4
-  pinMode(45, OUTPUT);
-  pinMode(44, OUTPUT);
-  pinMode(43, OUTPUT);
-  pinMode(42, OUTPUT);
-  pinMode(41, OUTPUT);
-  pinMode(40, OUTPUT);
-  pinMode(39, OUTPUT);
-  pinMode(38, OUTPUT);
-  pinMode(37, OUTPUT);
-  pinMode(36, OUTPUT);
-  pinMode(35, OUTPUT);
-
-  pinMode(34, OUTPUT);//C5
-  pinMode(33, OUTPUT);
-  pinMode(32, OUTPUT);
-  pinMode(31, OUTPUT);
-  pinMode(30, OUTPUT);
-  pinMode(29, OUTPUT);
-  pinMode(28, OUTPUT);
-  pinMode(27, OUTPUT);
-  pinMode(26, OUTPUT);
-  pinMode(25, OUTPUT);
-  pinMode(24, OUTPUT);
-  pinMode(23, OUTPUT);
-
-  pinMode(22, OUTPUT);//C6
+  DDRB |= B00001111;
+  DDRL |= B11111111;
+  DDRG |= B10000111;
+  DDRC |= B11111111;
+  DDRA |= B11111111;
 
   //PWM
   TCCR3B = (TCCR3B & 0b11111000) | 0x01;
