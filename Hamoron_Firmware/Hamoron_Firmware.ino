@@ -38,9 +38,7 @@ void VolumeChange() {
 
 
 uint8_t AdjustNote (uint8_t note) {
-  if (note <= 84 && note >= 53) {
-    return note;
-  } else if (note > 84) {
+  if (note > 84) {
     note = note - 12;
     if (note <= 84) {
       return note;
@@ -54,7 +52,6 @@ uint8_t AdjustNote (uint8_t note) {
       return note;
     }
     note = note - 12;
-    return note;
 
   } else if (note < 53) {
     note = note + 12;
@@ -74,8 +71,8 @@ uint8_t AdjustNote (uint8_t note) {
       return note;
     }
     note = note + 12;
-    return note;
   }
+  return note;
 }
 
 void handleNoteOn(uint8_t channel, uint8_t note, uint8_t velocity) {
